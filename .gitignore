@@ -12,3 +12,7 @@ venv/
 # Environment / Secrets
 .env
 .dev.vars
+
+# Local testing
+test_*.py
+tests/
