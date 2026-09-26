@@ -1,7 +1,7 @@
 name = "ha-cf-relay"
 main = "src/entry.py"
 compatibility_date = "2026-09-01"
-compatibility_flags = ["python_workers", "disable_python_external_sdk"]
+compatibility_flags = ["python_workers"]
 
 [[kv_namespaces]]
 binding = "SENSOR_KV"
