@@ -5,4 +5,4 @@ compatibility_flags = ["python_workers"]
 
 [[kv_namespaces]]
 binding = "SENSOR_KV"
-id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
+id = "a6f1a9b6d6c3428caa88ef01aad75518"
