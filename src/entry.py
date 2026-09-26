@@ -1,5 +1,5 @@
 import json
-from js import Response
+from js import Response, Headers
 from urllib.parse import urlparse, parse_qs
 
 CORS_HEADERS = {
@@ -8,13 +8,22 @@ CORS_HEADERS = {
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
 }
 
+def make_headers(extra=None):
+    h = Headers.new()
+    for k, v in CORS_HEADERS.items():
+        h.set(str(k), str(v))
+    if extra:
+        for k, v in extra.items():
+            h.set(str(k), str(v))
+    return h
+
 async def on_fetch(request, env):
     url_str = str(request.url)
     method = str(request.method)
 
     # Handle CORS Preflight
     if method == "OPTIONS":
-        return Response.new("", headers=CORS_HEADERS)
+        return Response.new("", status=204, headers=make_headers())
 
     # Ingestion Route (Home Assistant -> Cloudflare)
     if method == "POST" and "/update" in url_str:
@@ -23,7 +32,7 @@ async def on_fetch(request, env):
             return Response.new(
                 json.dumps({"error": "Unauthorized"}),
                 status=401,
-                headers={"Content-Type": "application/json"}
+                headers=make_headers({"Content-Type": "application/json"})
             )
 
         try:
@@ -38,13 +47,14 @@ async def on_fetch(request, env):
             await env.SENSOR_KV.put("telemetry_store", json.dumps(store))
             return Response.new(
                 json.dumps({"status": "ok"}),
-                headers={"Content-Type": "application/json"}
+                status=200,
+                headers=make_headers({"Content-Type": "application/json"})
             )
         except Exception as err:
             return Response.new(
                 json.dumps({"error": str(err)}),
                 status=400,
-                headers={"Content-Type": "application/json"}
+                headers=make_headers({"Content-Type": "application/json"})
             )
 
     # Public Consumption Route (Web Client -> Cloudflare)
@@ -63,7 +73,8 @@ async def on_fetch(request, env):
 
         return Response.new(
             json.dumps(output),
-            headers={"Content-Type": "application/json", **CORS_HEADERS}
+            status=200,
+            headers=make_headers({"Content-Type": "application/json"})
         )
 
-    return Response.new("Not Found", status=404)
+    return Response.new("Not Found", status=404, headers=make_headers())
