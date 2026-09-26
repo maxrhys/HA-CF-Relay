@@ -1,0 +1,14 @@
+# Wrangler / Cloudflare
+.wrangler/
+dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Environment / Secrets
+.env
+.dev.vars

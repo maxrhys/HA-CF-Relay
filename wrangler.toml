@@ -1,0 +1,7 @@
+name = "ha-cf-relay"
+main = "src/entry.py"
+compatibility_date = "2026-09-01"
+
+[[kv_namespaces]]
+binding = "SENSOR_KV"
+id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
