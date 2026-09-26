@@ -70,12 +70,12 @@ def run_tests():
     print("\nTest 2: Testing authorized POST /update with sensor telemetry...")
     now_iso = datetime.now().isoformat()
     test_payload = {
-        "unit_test_relay": {
-            "name": "Live Test Unit",
+        "Incubator01": {
+            "name": "Incubator 01",
             "updated_at": now_iso,
             "sensors": {
-                "temperature": {"value": 23.4, "unit": "°C"},
-                "humidity": {"value": 52.0, "unit": "%"}
+                "temperature": {"value": 37, "unit": "°C"},
+                "humidity": {"value": 50, "unit": "%"}
             }
         }
     }
@@ -109,22 +109,22 @@ def run_tests():
             cors_header = resp.headers.get("Access-Control-Allow-Origin")
             body = resp.read().decode("utf-8")
             data = json.loads(body)
-            if "unit_test_relay" in data:
+            if "Incubator01" in data:
                 print(f"✅ Passed: GET /data returned ingested device! (CORS Origin: {cors_header})")
             else:
-                print(f"❌ Failed: 'unit_test_relay' not found in store: {body}")
+                print(f"❌ Failed: 'Incubator01' not found in store: {body}")
     except Exception as e:
         print(f"❌ Failed: GET /data failed: {e}")
 
-    # Test 4: Filtered GET /data?device=unit_test_relay
-    print("\nTest 4: Testing filtered GET /data?device=unit_test_relay...")
-    filter_url = f"{worker_url}/data?device=unit_test_relay"
+    # Test 4: Filtered GET /data?device=Incubator01
+    print("\nTest 4: Testing filtered GET /data?device=Incubator01...")
+    filter_url = f"{worker_url}/data?device=Incubator01"
     req = urllib.request.Request(filter_url, method="GET")
     try:
         with urllib.request.urlopen(req) as resp:
             body = resp.read().decode("utf-8")
             data = json.loads(body)
-            if data.get("name") == "Live Test Unit":
+            if data.get("name") == "Incubator 01":
                 print(f"✅ Passed: Filtered device query succeeded! Details: {data['sensors']}")
             else:
                 print(f"❌ Failed: Device filter response unexpected: {body}")
