@@ -1,6 +1,6 @@
 name = "ha-cf-relay"
 main = "src/entry.py"
-compatibility_date = "2026-09-01"
+compatibility_date = "2024-05-01"
 compatibility_flags = ["python_workers"]
 
 [[kv_namespaces]]
